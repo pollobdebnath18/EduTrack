@@ -1,0 +1,37 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id String @id @default (uuid())
+  name String
+  email String
+  password String
+  role userRole @default(Student)
+  
+}
+enum userRole {
+  Admin
+  Student
+  Teacher
+}
+
+// Teacher 
+model Teacher {
+  id String @id @default (uuid())
+  title String 
+  description String
+  subject String
+  startDate DateTime
+  endDate DateTime
+  marks Int
+
+  @@map("teachers")
+}
+
