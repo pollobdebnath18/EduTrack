@@ -1,0 +1,50 @@
+Project Brief: Assignment & Submission Management System
+
+# Technical Stack
+## Client
+- TypeScript
+- Next.js
+- TailwindCSS
+- React Icons
+
+## Server
+- TypeScript
+- Express.js
+- Prisma ORM
+- PostgreSQL
+- JWT Authentication
+
+# User Roles and Responsibilities
+
+## 1. Admin
+- Manage users.
+- Manage classes/courses and subjects.
+- Assign teachers to subjects/classes.
+- View all assignments and submissions.
+- Manage application-level settings where necessary.
+
+## 2. Teacher
+- Create, update, and delete assignments.
+- Assign an assignment to a specific class/course and subject.
+- Define the title, description, deadline, and maximum marks.
+- Publish an assignment or keep it as a draft.
+- View student submissions.
+- Assign marks and provide feedback.
+- Change the submission status when necessary.
+
+## 3. Student
+- View assignments assigned to their class/course.
+- View assignment details and deadline.
+- Submit an answer.
+- Update a submission before the deadline, if allowed.
+- View submission status, marks and teacher feedback.
+
+# Design Notes
+- A suitable design can be used for the application.
+- Any important design decisions should be documented and explained.
+
+# UI Components & Pages
+- Navbar (Navigation bar for easy access across the application).
+- Banner (Hero section on the home page).
+- Important Home Pages (e.g., sections for features, recent updates, or statistics).
+- Footer (Containing links, copyright, and additional information).
