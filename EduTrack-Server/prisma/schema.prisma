@@ -1,37 +1,104 @@
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id String @id @default (uuid())
-  name String
-  email String
-  password String
-  role userRole @default(Student)
-  
+enum AssignmentStatus {
+  Draft
+  Published
+  Closed
 }
+
+enum SubmissionStatus {
+  Pending
+  Submitted
+  Graded
+  Late
+}
+
 enum userRole {
   Admin
   Student
   Teacher
 }
 
-// Teacher 
-model Teacher {
-  id String @id @default (uuid())
-  title String 
-  description String
-  subject String
-  startDate DateTime
-  endDate DateTime
-  marks Int
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      userRole @default(Student)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isDeleted Boolean  @default(false)
 
-  @@map("teachers")
+  submissions Submission[]
+
+  @@index([email])
+  @@index([role])
+  @@index([isDeleted])
+  @@map("users")
 }
 
+model Subject {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  isDeleted   Boolean  @default(false)
+
+  assignments Assignment[]
+
+  @@index([name])
+  @@index([isDeleted])
+  @@map("subjects")
+}
+
+model Assignment {
+  id          String           @id @default(uuid())
+  title       String
+  description String?
+  subjectId   String
+  startDate   DateTime?
+  deadline    DateTime?
+  maxMarks    Int              @default(100)
+  status      AssignmentStatus @default(Draft)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  isDeleted   Boolean          @default(false)
+
+  subject     Subject      @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  submissions Submission[]
+
+  @@index([subjectId])
+  @@index([status])
+  @@index([isDeleted])
+  @@map("assignments")
+}
+
+model Submission {
+  id           String           @id @default(uuid())
+  assignmentId String
+  userId       String
+  answer       String?
+  status       SubmissionStatus @default(Pending)
+  marks        Int?
+  feedback     String?
+  submittedAt  DateTime         @default(now())
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  isDeleted    Boolean          @default(false)
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([assignmentId])
+  @@index([status])
+  @@index([isDeleted])
+  @@map("submissions")
+}
