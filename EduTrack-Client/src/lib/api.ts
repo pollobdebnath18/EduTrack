@@ -1,7 +1,8 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const auth = typeof window !== "undefined" ? localStorage.getItem("edutrack_auth") : null;
+  const token = auth ? JSON.parse(auth).token : null;
   
   const headers = new Headers(options.headers || {});
   if (token) {
